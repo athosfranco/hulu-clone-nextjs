@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { PlayIcon, XCircleIcon } from "@heroicons/react/outline";
+import { PlayIcon, XCircleIcon, ThumbUpIcon } from "@heroicons/react/outline";
 
 function MovieCard({ selectedMovie, onChangeState }) {
   //endpoint base para requisiçao das imagens
@@ -14,9 +14,11 @@ function MovieCard({ selectedMovie, onChangeState }) {
     if (text.length > stringLimit) return `${reducedString} [...]`;
     else return text;
   };
+  //retorna apenas o ano da data
+  const formatDate = (date) => date.split("-")[0];
   return (
     <div
-      className="z-50 flex flex-col sm:w-2/4 p-4 sm:p-8 top-14 bg-custom-dark"
+      className="z-10 flex flex-col sm:w-2/4 p-4 top-14 bg-custom-dark"
       style={{
         position: "fixed",
         margin: "auto",
@@ -40,9 +42,22 @@ function MovieCard({ selectedMovie, onChangeState }) {
         />
       </div>
 
-      <h2 className="mt-4 mb-4 text-5xl text-white transition-all duration-100 ease-in-out">
+      <h2 className="mt-4 mb-4 sm:text-5xl text-3xl text-white transition-all duration-100 ease-in-out">
         {selectedMovie.title || selectedMovie.original_name}
       </h2>
+      <div className="flex justify-between">
+        <h3 className="mb-2 text-2xl">
+          {formatDate(
+            selectedMovie.first_air_date || selectedMovie.release_date
+          )}
+        </h3>
+        <div className="flex items-center">
+          <ThumbUpIcon className="h-5 pr-1" />
+          <h3>{selectedMovie.vote_average}</h3>
+          <h3 className="pl-1 text-gray-500">({selectedMovie.vote_count})</h3>
+        </div>
+      </div>
+
       <p className="text-left mb-4">{limitString(selectedMovie.overview)}</p>
       <div className="flex w-full">
         <button className="flex justify-center items-center bg-custom-light hover:bg-custom-lighter text-white  py-2 px-4 rounded mt-2 transition duration-200 ease-in-out">

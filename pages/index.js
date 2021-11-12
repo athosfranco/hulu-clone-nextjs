@@ -1,11 +1,25 @@
+import React, { useState } from "react";
 import Head from "next/head";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Nav from "../components/Nav";
 import Results from "../components/Results";
 import fetchRequests from "../utils/requests";
+import MovieCard from "../components/MovieCard";
 
 export default function Home({ results }) {
+  //states
+  const [movieInfo, setMovieInfo] = useState("");
+  const [showMovieInfo, setShowMovieInfo] = useState(false);
+  //controla oq será exibido no modal
+  const movieInfoHandler = (movieData, handlerData) => {
+    setMovieInfo(movieData);
+    setShowMovieInfo(handlerData);
+  };
+  //close card function
+  const closeCardHandler = (data) => {
+    setShowMovieInfo(data); //'state' vem de <MovieCard/>
+  };
   console.log(results);
   return (
     <div>
@@ -22,7 +36,10 @@ export default function Home({ results }) {
       <Nav />
 
       {/* RESULTS */}
-      <Results results={results} />
+      <Results results={results} onGetMovieInfo={movieInfoHandler} />
+      {showMovieInfo && (
+        <MovieCard selectedMovie={movieInfo} onChangeState={closeCardHandler} />
+      )}
 
       <Footer />
     </div>
